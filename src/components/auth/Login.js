@@ -14,28 +14,29 @@ const Login = () => {
   // form function
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(email.trim() === "" || password.trim() === ""){
+    if (email.trim() === "" || password.trim() === "") {
       setError(true);
       return;
     }
-    const details = JSON.parse(sessionStorage.getItem("user"));
 
-    if(!details){
-      navigate("/unauthorized");
-      return;
-    }
+    try {
+      const res = await fetch("https://dummyjson.com/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: "atuny0",
+          password: "9uQFF1Lh",
+        }),
+      });
 
-    if(details["email"] !== email || details["password"] !== password){
-      setError(true);
-      return;
+      const data = await res.json();
+
+      localStorage.setItem("auth", JSON.stringify(data));
+      setError(false);
+      navigate("/home");
+    } catch (error) {
+      console.log(error.message);
     }
-    const access = {
-      ...details,
-      isVerified: true,
-    }
-    sessionStorage.setItem("user", JSON.stringify(access));
-    setError(false);
-    navigate("/home");
   };
   return (
     <div className={styles["div-styling"]}>
@@ -52,7 +53,6 @@ const Login = () => {
               className={styles.input}
               required
             />
-          
           </div>
           <div className={styles["input-div"]}>
             <input
@@ -63,7 +63,6 @@ const Login = () => {
               className={styles.input}
               required
             />
-           
           </div>
           <div>
             <button type="submit" className={styles.loginBtn}>

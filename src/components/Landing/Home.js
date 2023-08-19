@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./home.module.css";
 
@@ -27,6 +26,7 @@ const Home = () => {
         // console.log(data);
         localStorage.setItem("user", JSON.stringify(data));
         setFetchedData([data]);
+        setError("");
       } catch (error) {
         setError(error.message);
         console.log(error.message);
@@ -44,26 +44,26 @@ const Home = () => {
   return (
     <div className={styles.div}>
       <div className={styles.header}>
-        <div>Full stack 4.2</div>
+        <div className={styles.heading}>Full stack 4.2</div>
 
         <button className={styles.btn} onClick={logoutHandler}>
           Logout
         </button>
       </div>
       <div className={styles.result}>
-        {error && <div>{error}</div>}
-
+        {error  && <div>{error}</div>}
+        
         {fetchedData &&
           fetchedData.map((val, i) => {
             return (
               <div key={i}>
-                <div>Fetched Details-</div>
-                <div>First Name: {val.firstName}</div>
-                <div>Last Name: {val.lastName}</div>
-                <div>Username: {val.username}</div>
-                <div>Date of Birth: {val.birthDate}</div>
-                <div>Age: {val.age}</div>
-                <div>Gender: {val.gender}</div>
+                <div className={styles.fetchHeading}>Fetched Details-</div>
+                <div className={styles.fetchDetails}>First Name: {val.firstName}</div>
+                <div className={styles.fetchDetails}>Last Name: {val.lastName}</div>
+                <div className={styles.fetchDetails}>Username: {val.username}</div>
+                <div className={styles.fetchDetails}>Date of Birth: {val.birthDate}</div>
+                <div className={styles.fetchDetails}>Age: {val.age}</div>
+                <div className={styles.fetchDetails}>Gender: {val.gender}</div>
               </div>
             );
           })}
